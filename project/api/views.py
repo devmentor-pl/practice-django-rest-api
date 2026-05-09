@@ -29,3 +29,21 @@ def rate_movie_view(request):
     return Response({'error': 'Ocena musi być liczbą od 1 do 10.'}, status=400)
     
         
+ideas = []
+next_id = 1
+
+class IdeaAPIView(APIView):
+    def get(self, request):
+        return Response(ideas)
+    
+    def post(self, request):
+        global next_id
+        description = request.data.get('description')
+        if not description:
+            return Response({'error': 'Opis jest wymagany.'}, status=400)
+        
+        new_idea = {'id': next_id, 'description': description}
+        ideas.append(new_idea)
+        next_id += 1
+        return Response(ideas, status=201)
+    
