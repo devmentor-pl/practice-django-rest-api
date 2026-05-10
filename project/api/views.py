@@ -47,3 +47,30 @@ class IdeaAPIView(APIView):
         next_id += 1
         return Response(ideas, status=201)
     
+
+class IdeaDetailAPIView(APIView):
+    def get_idea(self, idea_id):
+        return next((idea for idea in ideas if idea_id == idea['id']), None)
+    
+    def get(self, request, idea_id):
+        idea = self.get_idea(idea_id)
+        if not idea:
+            return Response({"error": "Not found"}, status=404)
+        return Response(idea)
+    
+    def put(self, request, idea_id):
+        idea = self.get_idea(idea_id)
+        if not idea:
+            return Response({"error": "Not found"}, status=404)
+        idea['description'] = request.data.get('description', idea['description'])
+        return Response(idea)
+    
+    def delete(self, request, idea_id):
+        idea = self.get_idea(idea_id)
+        if not idea:
+            return Response({"error": "Not found"}, status=404)
+        ideas.remove(idea)
+        return Response(status=204)
+        
+    
+    

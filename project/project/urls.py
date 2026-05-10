@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from api.views import hello_view, rate_movie_view, IdeaAPIView
+from api.views import hello_view, rate_movie_view, IdeaAPIView, IdeaDetailAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/hello/', hello_view, name='hello'),
     path('api/rate/', rate_movie_view, name='rate_movie'),
     path('api/ideas/', IdeaAPIView.as_view(), name='ideas'),
+    path('api/ideas/<int:idea_id>/', IdeaDetailAPIView.as_view(), name='ideas_detail')
 ]
 
