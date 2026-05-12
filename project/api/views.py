@@ -1,10 +1,12 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
+import datetime
+from rest_framework import viewsets
+from rest_framework.decorators import api_view, action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .serializers import RecipeSerializer
-from .models import Recipe
+from .serializers import RecipeSerializer, EventSerializer
+from .models import Recipe, Event
+
 
 
 @api_view(['GET'])
@@ -76,7 +78,6 @@ class IdeaDetailAPIView(APIView):
         return Response(status=204)
         
     
-
 class RecipeAPIView(APIView):
     def get(self, request):
         recipes = Recipe.objects.all()
@@ -88,5 +89,19 @@ class RecipeAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)        
+        return Response(serializer.errors, status=400)
     
+
+########### ex. 5 #########################
+    
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all().order_by('date')
+    serializer_class = EventSerializer
+    
+    @action(methods=['get'], detail=False)
+    def recent(self, request):
+        today = datetime.date.today()
+        future_date = today + datetime.timedelta(days=7)
+        recent_events = Event.objects.filter(date__gte=today, date__lte=future_date).order_by('date')[:5]
+        serializer = self.get_serializer(recent_events, many=True)
+        return Response(serializer.data)

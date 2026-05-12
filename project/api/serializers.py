@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Recipe, Ingredient
+from .models import Recipe, Ingredient, Event
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -24,3 +24,11 @@ class RecipeSerializer(serializers.ModelSerializer):
             ingredient, _ = Ingredient.objects.get_or_create(name=ingredient_data['name'])
             recipe.ingredients.add(ingredient)
         return recipe
+    
+    
+######### ex. 5 ###################
+
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = '__all__'
