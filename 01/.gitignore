@@ -1,0 +1,51 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pkl
+
+# --- Virtual env ---
+venv/
+.venv/
+
+# --- Environment variables ---
+.env
+*.env
+.env.*
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+
+# --- Byte-compiled / cache ---
+*.egg-info/
+.eggs/
+*.egg
+dist/
+build/
+pip-wheel-metadata/
+
+# --- Logs ---
+*.log
+logs/
+*.out
+
+# --- pytest / tests ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- REST API (FastAPI/Flask/Django) ---
+# Auto-generated API docs
+openapi.json
+schema.json
+
+# SQLite database (jeśli używasz)
+db.sqlite3
+*.sqlite3
+
+# Django-specific
+media/
+staticfiles/
