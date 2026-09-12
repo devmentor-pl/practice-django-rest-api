@@ -9,21 +9,18 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-
-    ingredients = IngredientSerializer(many=True, read_only=True)
-    ingredients_names = serializers.ListField(
-        child=serializers.CharField(),
-        write_only=True
-    )
+    ingredients = IngredientSerializer(many=True)
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'ingredients', 'ingredients_names']
+        fields = ['id', 'title', 'ingredients']
 
     def create(self, validated_data):
-        ingredients = validated_data.pop('ingredients_names', [])
+        ingredients_data = validated_data.pop('ingredients', [])
+
         recipe = Recipe.objects.create(**validated_data)
-        for name in ingredients:
-            Ingredient.objects.create(name=name, recipe=recipe)
+
+        for ingredient_data in ingredients_data:
+            Ingredient.objects.create(recipe=recipe, **ingredient_data)
 
         return recipe
